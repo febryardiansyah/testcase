@@ -12,20 +12,17 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: BlocProvider(
-        create: (context) =>
-        AuthBlocCubit(
-        )
-          ..fetch_history_login(),
+        create: (context) => AuthBlocCubit()..fetchHistoryLogin(),
         child: MyHomePageScreen(),
       ),
     );
@@ -38,27 +35,19 @@ class MyHomePageScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthBlocCubit, AuthBlocState>(
-        builder: (context, state)
-        {
-          if(state is AuthBlocLoginState)
-          {
-            return LoginPage();
-          }
-          else if(state is AuthBlocLoggedInState)
-          {
-            return BlocProvider(
-              create: (context) =>
-              HomeBlocCubit(
-              )
-                ..fetching_data(),
-              child: HomeBlocScreen(),
-            );
-          }
-
-          return Center(child: Text(
-              kDebugMode?"state not implemented $state": ""
-          ));
-        });
+      builder: (context, state) {
+        if (state is AuthBlocLoginState) {
+          return LoginPage();
+        } else if (state is AuthBlocLoggedInState) {
+          return BlocProvider(
+            create: (context) => HomeBlocCubit()..fetching_data(),
+            child: HomeBlocScreen(),
+          );
+        }
+        return Center(
+          child: Text(kDebugMode ? "state not implemented $state" : ""),
+        );
+      },
+    );
   }
 }
-

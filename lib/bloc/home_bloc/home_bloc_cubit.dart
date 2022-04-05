@@ -17,7 +17,7 @@ class HomeBlocCubit extends Cubit<HomeBlocState> {
     if(movieResponse==null){
       emit(HomeBlocErrorState("Error Unknown"));
     }else{
-      emit(HomeBlocLoadedState(movieResponse.results));
+      emit(HomeBlocLoadedState(movieResponse.results!));
     }
   }
 }

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -10,7 +9,7 @@ abstract class CustomFormField<T> extends FormField<T> {
 
   CustomFormField({
     this.controller,
-    required T initialValue,
+    T? initialValue,
     required FormFieldBuilder<T> builder,
      FormFieldValidator<T>? validator,
     FormFieldSetter<T>? onSaved,
@@ -63,7 +62,7 @@ abstract class CustomFormFieldController<T> extends ChangeNotifier implements Va
     _value = newValue;
     if (_value != null) {
       final text = fromValue(_value);
-      if (text != null && text != textController.text) {
+      if (text != textController.text) {
         textController.text = text;
       }
     } else {
@@ -83,9 +82,9 @@ abstract class CustomFormFieldController<T> extends ChangeNotifier implements Va
 }
 
 class CustomFormFieldState<T> extends FormFieldState<T> {
-  VoidCallback? _listener;
+  late VoidCallback _listener;
 
-  CustomFormFieldController<T> get _controller => widget.controller!;
+  CustomFormFieldController<T>? get _controller => widget.controller;
 
   @override
   CustomFormField<T> get widget => super.widget as CustomFormField<T>;
@@ -96,7 +95,7 @@ class CustomFormFieldState<T> extends FormFieldState<T> {
     _listener = () {
       final newValue = _controller?.value;
       if (value != newValue) {
-        didChange(newValue);
+        didChange(newValue!);
       }
     };
     _controller?._initState(didChange);
@@ -120,14 +119,16 @@ class CustomFormFieldState<T> extends FormFieldState<T> {
   void reset() {
     super.reset();
     setState(() {
-      _controller?.value = widget.initialValue;
+      if (widget.initialValue != null) {
+        _controller?.value = widget.initialValue!;
+      }
     });
   }
 
   @override
-  void didChange(T value) {
+  void didChange(T? value) {
     if (_controller == null || _controller?.value != value) {
-      _controller?.value = value;
+      _controller?.value = value!;
     }
 
     /// check mounted to prevent memory leak when setState after dispose

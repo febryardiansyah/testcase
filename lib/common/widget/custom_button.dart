@@ -31,20 +31,15 @@ class CustomButton extends StatelessWidget {
       : isOutline = true,
         super(key: key);
 
-  OutlinedBorder _shapeBorder(BuildContext context) =>
-      shapeBorder ??
-          RoundedRectangleBorder(
-            side: isSecondary
-                ? BorderSide(
-                color: Theme.of(context).primaryColor,
-                width: 1,
-                style: BorderStyle.solid)
+  OutlinedBorder _shapeBorder(BuildContext context) => shapeBorder ??
+      RoundedRectangleBorder(side: isSecondary ? BorderSide(color: Theme.of(context).primaryColor, width: 1, style: BorderStyle.solid)
                 : BorderSide.none,
             borderRadius: BorderRadius.circular(8),
           );
 
   Widget _label(BuildContext context) {
-    return Expanded(
+    return Container(
+      width: MediaQuery.of(context).size.width,
       child: Text(
         text ?? '',
         maxLines: 1,
@@ -58,9 +53,7 @@ class CustomButton extends StatelessWidget {
   Color _color(BuildContext context) {
     final primaryColor = Theme.of(context).primaryColor;
     final color = isSecondary ? Colors.transparent : primaryColor;
-    return isSecondary
-        ? primaryColor
-        : color.computeLuminance() > 0.5
+    return isSecondary ? primaryColor : color.computeLuminance() > 0.5
         ? Colors.black
         : Colors.white;
   }
@@ -73,20 +66,18 @@ class CustomButton extends StatelessWidget {
       height: height,
       buttonColor: color,
       minWidth: double.infinity,
-      child: isOutline
-          ? OutlinedButton.icon(
+      child: isOutline ? OutlinedButton.icon(
           style: OutlinedButton.styleFrom(
             backgroundColor: color,
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             shape: _shapeBorder(context),
           ).copyWith(
-              side: MaterialStateProperty.all(BorderSide(
-                color: _color(context),
-                width: 2,
-              ))),
+              side: MaterialStateProperty.all(BorderSide(color: _color(context), width: 2,),
+              ),
+          ),
           icon: leadingIcon ?? const SizedBox(),
           label: _label(context),
-          onPressed: onPressed)
+          onPressed: onPressed,)
           : TextButton.icon(
           style: TextButton.styleFrom(
             backgroundColor: color,
@@ -96,7 +87,7 @@ class CustomButton extends StatelessWidget {
           ),
           icon: leadingIcon ?? const SizedBox(),
           label: _label(context),
-          onPressed: onPressed),
+          onPressed: onPressed,),
     );
   }
 }

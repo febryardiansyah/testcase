@@ -30,11 +30,11 @@ class HomeBlocLoadedScreen extends StatelessWidget {
         children: [
           Padding(
             padding: EdgeInsets.all(25),
-            child: Image.network("https://image.tmdb.org/t/p/w500/"+data.posterPath),
+            child: Image.network("https://image.tmdb.org/t/p/w500/${data.posterPath}"),
           ),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 8, horizontal: 20),
-            child: Text(data.name, textDirection: TextDirection.ltr),
+            child: Text(data.name ?? '', textDirection: TextDirection.ltr),
           )
         ],
       ),
